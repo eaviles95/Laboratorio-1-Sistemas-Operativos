@@ -1,8 +1,15 @@
 #include <stdio.h>
-#include "../incl/example.h" 
+#include <stdlib.h>
+#include <string.h>
+#include "../incl/example.h"
+#include "../incl/funciones.h"
+
 
 int main(int argc, char const *argv[])
 {
-	printExample("This is a example of a complete program in C :D ");
+	int a = obtenerCantLineas("archivo.txt");
+	extraerLineas("archivo.txt",a);
+	char h[] = "1 2 3";
+	quitarEspacios(h);
 	return 0; 
 }
