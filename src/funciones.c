@@ -6,11 +6,12 @@
 
 void usoArgumentos()
 {
-	printf("\nc: cantidad de imagenes\n");
-	printf("m: nombre del archivo con la mascara\n");
-	printf("n: porcentaje del umbral\n");
-	printf("b: bandera para mostrar datos por pantalla (si se ingresa, se muestran los resultados)\n");
-	printf("\n-c <Cantidad> -m <filtro.txt> -n <Umbral> -b\n\n");
+	printf("\n Existe un error en los argumentos de entrada! \n");
+	printf("\nc: cantidad de imagenes.\n");
+	printf("m: nombre del archivo con la mascara.\n");
+	printf("n: porcentaje del umbral de negro.\n");
+	printf("b: bandera para mostrar datos por pantalla (si se ingresa, se muestran los resultados).\n");
+	printf("\n./exe -c <Cantidad> -m <filtro.txt> -n <Umbral> -b\n\n");
 	return;
 }
 
