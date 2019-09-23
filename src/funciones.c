@@ -51,7 +51,7 @@ void quitarEspacios(char frase[]){
     int i;
     palabras=strtok(frase," ");
     linea[0] = palabras[0];
-    for (i = 0; i <2; i++)
+    for (i = 0; i <=strlen(frase); i++)
     {
         palabras=strtok(0," ");
         linea[i+1] = palabras[0];
