@@ -1,6 +1,7 @@
 #ifndef FUNCIONES_H
 #define FUNCIONES_H
 
+void usoArgumentos();
 
 int obtenerCantLineas(char *nombreArchivo);
 
