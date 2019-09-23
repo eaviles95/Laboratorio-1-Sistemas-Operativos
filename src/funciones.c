@@ -15,6 +15,36 @@ void usoArgumentos()
 	return;
 }
 
+int** crearMatrizVacia(int numero)
+{
+	int ** matriz;
+	matriz = (int**)malloc(sizeof(int*)*numero);
+	
+	int i;
+	i = 0;
+	while(i<numero)
+	{
+		matriz[i]= (int*)malloc(sizeof(int)*numero);
+		i++;
+	}
+
+	int j;
+	i =0;
+
+	while(i<numero)
+	{
+		j=0;
+		while(j<numero)
+		{
+			matriz[i][j] = 0;
+			j++;
+		}
+		i++;
+	}
+
+	return matriz;
+}
+
 
 int obtenerCantLineas(char *nombreArchivo){
 	FILE *fichero=fopen(nombreArchivo,"r");
@@ -39,19 +69,20 @@ char** extraerLineas(char *nombre,int lineas){
     char** palabra=(char**)malloc(sizeof(char*)*100);
     printf("-----Leyendo imagen %s...------\n",nombre);
 	// se indica que se quiere leer el archivo para lectura.
-    FILE *fp;
-	int i=0; 	
- 	char buffer[100];
- 	fp = fopen (nombre, "r");
-    for (i = 0; i < lineas; i++)
-    {
-		palabra[i]=(char*)malloc(sizeof(char)*20);
-        fgets(buffer, 30,fp);
-        palabra[i] = buffer;
-     	//printf("%s",buffer);
+    char linea[1024];
+    FILE *fich;
+ 
+    fich = fopen(nombre, "r");
+    //Lee línea a línea y escribe en pantalla hasta el fin de fichero
+	int i = 0;
+    while(fgets(linea, 1024, (FILE*) fich)) {
+		palabra[i] = (char*)malloc(sizeof(char));
+		strcat(palabra[i],linea);
+        //printf("LINEA: %s", palabra[i]);
+		i=i+1;
     }
- 	fclose ( fp );
-    printf("\n------Fin de la lectura de la imagen.----\n");
+	printf("\n------Fin de la lectura de la imagen.----\n");
+    fclose(fich);
 	return palabra;
 }
 

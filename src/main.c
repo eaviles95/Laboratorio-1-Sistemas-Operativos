@@ -60,7 +60,8 @@ int main(int argc, char **argv)
 
 			int a = obtenerCantLineas(archivoMascara);
 			char h[] = "1 2 3";
-			quitarEspacios(h);
+			extraerLineas(archivoMascara,a);
+			//quitarEspacios(h);
 			printf("\n");
 			return 0;
 		}
