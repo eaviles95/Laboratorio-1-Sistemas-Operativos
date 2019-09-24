@@ -15,37 +15,6 @@ void usoArgumentos()
 	return;
 }
 
-int** crearMatrizVacia(int numero)
-{
-	int ** matriz;
-	matriz = (int**)malloc(sizeof(int*)*numero);
-	
-	int i;
-	i = 0;
-	while(i<numero)
-	{
-		matriz[i]= (int*)malloc(sizeof(int)*numero);
-		i++;
-	}
-
-	int j;
-	i =0;
-
-	while(i<numero)
-	{
-		j=0;
-		while(j<numero)
-		{
-			matriz[i][j] = 0;
-			j++;
-		}
-		i++;
-	}
-
-	return matriz;
-}
-
-
 int obtenerCantLineas(char *nombreArchivo){
 	FILE *fichero=fopen(nombreArchivo,"r");
 	int contador=0;
@@ -87,7 +56,7 @@ char** extraerLineas(char *nombre,int lineas){
 }
 
 
-void quitarEspacios(char frase[]){
+char* quitarEspacios(char frase[]){
     char* palabras;
     char* linea = (char*)malloc(sizeof(char)*3);
     int i;
@@ -100,11 +69,66 @@ void quitarEspacios(char frase[]){
     }
 	for (i = 0; i < strlen(linea); i++)
 	{
-        printf("%c ", linea[i]);		
+        //printf("%c", linea[i]);		
 	}
+	return linea;
 }
 
 
+int** crearMatrizMascara(char** matriz,int lineas){
+	char** matrizAux = (char**)malloc(sizeof(char*));
+	int i, j;
+	int** mtx = (int**)malloc(sizeof(int*));
+	for (i = 0; i < 3; i++)
+	{
+		matrizAux[i] = (char*)malloc(sizeof(char));
+		matrizAux[i] = quitarEspacios(matriz[i]);
+		//printf("%s\n", matrizAux[i]);
+	}
+	for ( i = 0; i < 3; i++)
+	{
+		mtx[i] = (int*)malloc(sizeof(int));
+		for (j = 0; j < 3; j++)
+		{
+			//se resta '0' para obtener el valor entero del caracter
+			mtx[i][j] = matrizAux[i][j] - '0';
+			printf("%d", mtx[i][j]);
+		}
+		printf("\n");
+	}
+	return mtx;
+}
+
+
+int** crearMatrizVacia(int numero)
+{
+	int ** matriz;
+	matriz = (int**)malloc(sizeof(int*)*numero);
+	
+	int i;
+	i = 0;
+	while(i<numero)
+	{
+		matriz[i]= (int*)malloc(sizeof(int)*numero);
+		i++;
+	}
+
+	int j;
+	i =0;
+
+	while(i<numero)
+	{
+		j=0;
+		while(j<numero)
+		{
+			matriz[i][j] = 0;
+			j++;
+		}
+		i++;
+	}
+
+	return matriz;
+}
 
 
 

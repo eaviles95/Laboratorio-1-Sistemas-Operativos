@@ -7,6 +7,6 @@ int obtenerCantLineas(char *nombreArchivo);
 
 char** extraerLineas(char *nombre,int lineas);
 
-void quitarEspacios(char frase[]);
+char* quitarEspacios(char frase[]);
 
 #endif
