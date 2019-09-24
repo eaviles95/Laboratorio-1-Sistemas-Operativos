@@ -55,13 +55,16 @@ int main(int argc, char **argv)
 		{
 			// Se realiza un EXEC para reemplazar este proceso con la primera etapa del pipeline
 			char *args[] = {"leerImagen.out", NULL};
-			execvp("src/pipeline/leerImagen.out", args);
+			//execvp("src/pipeline/leerImagen.out", args);
 
 			int a = obtenerCantLineas(archivoMascara);
 			char h[] = "1 2 3";
 			char **matriz = extraerLineas(archivoMascara, a);
 
-			crearMatrizMascara(matriz, a);
+			int** mtxMascara = crearMatrizMascara(matriz, a);
+			int** imagen = crearMatrizVacia(3);
+			matrices(mtxMascara, imagen);
+
 			printf("\n");
 			return 0;
 		}

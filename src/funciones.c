@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
+#include <time.h>
 #include "../incl/funciones.h"
 
 void usoArgumentos()
@@ -92,10 +93,11 @@ int** crearMatrizMascara(char** matriz,int lineas){
 		{
 			//se resta '0' para obtener el valor entero del caracter
 			mtx[i][j] = matrizAux[i][j] - '0';
-			printf("%d", mtx[i][j]);
+			//printf("%d", mtx[i][j]);
 		}
-		printf("\n");
+		//printf("\n");
 	}
+	i = 0;
 	return mtx;
 }
 
@@ -115,19 +117,67 @@ int** crearMatrizVacia(int numero)
 
 	int j;
 	i =0;
-
+	
 	while(i<numero)
 	{
 		j=0;
 		while(j<numero)
 		{
-			matriz[i][j] = 0;
+			matriz[i][j] = 3;
+			printf("%d ", matriz[i][j]);
 			j++;
 		}
+		printf("\n");
 		i++;
 	}
 
+
 	return matriz;
+}
+
+void matrices(int** mtx1, int** mtx2){
+   
+   
+    int i,j, k;
+	int** resultado = (int**) malloc(sizeof(int*));
+    printf("Introduce 6 valores para la primera matriz:\n");
+    for(i=0;i<3;i++){
+        for(j=0;j<3;j++){
+        	printf("%d",mtx1[i][j]);
+            }
+			printf("\n");
+        }
+ 
+        printf("Introduce 6 valores para la segunda matriz:\n");
+        for(i=0;i<3;i++){
+            for(j=0;j<3;j++){
+        	printf("%d",mtx2[i][j]);
+            }
+			printf("\n");
+
+        }
+        printf("***LA MATRIZ PRODUCTO DE LAS 2 INDICADAS ES:\n");
+
+	
+	for (i = 0 ; i < 3 ; i++ ) //i para las filas de la matriz resultante
+	{
+		resultado[i] = (int*) malloc(sizeof(int));
+
+		for (k = 0 ; k < 3 ; k++ ) // k para las columnas de la matriz resultante
+		{
+			int temporal = 0 ;
+			for (j = 0 ; j < 2 ; j++ ) //j para realizar la multiplicacion de 
+					{                                   //los elementos   de la matriz
+				temporal += mtx1[i][j] * mtx2[j][k];
+				resultado[i][k] = temporal ;
+				printf("%d ", resultado[i][k]);
+				}
+			printf("\n");
+
+			}
+
+	}
+
 }
 
 
