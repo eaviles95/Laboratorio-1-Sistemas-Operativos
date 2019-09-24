@@ -9,4 +9,6 @@ char** extraerLineas(char *nombre,int lineas);
 
 char* quitarEspacios(char frase[]);
 
+int** crearMatrizMascara(char** matriz,int lineas);
+
 #endif

@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <getopt.h>
+#include <unistd.h>
 #include <string.h>
 #include "../incl/funciones.h"
 
@@ -52,17 +53,15 @@ int main(int argc, char **argv)
 		}
 		else
 		{
-			// Listo para enviar al pipeline.
-			printf("\nCantidad de imagenes: %d\n", cantidadImagenes);
-			printf("Nombre del archivo mascara: %s\n", archivoMascara);
-			printf("Porcentaje de umbral de negro: %d\n", umbralNegro);
-			printf("Valor de flag de muestra de resultados: %d\n\n", bflag);
+			// Se realiza un EXEC para reemplazar este proceso con la primera etapa del pipeline
+			char *args[] = {"leerImagen.out", NULL};
+			execvp("src/pipeline/leerImagen.out", args);
 
 			int a = obtenerCantLineas(archivoMascara);
 			char h[] = "1 2 3";
-			char** matriz = extraerLineas(archivoMascara,a);
+			char **matriz = extraerLineas(archivoMascara, a);
 
-			crearMatrizMascara(matriz,a);
+			crearMatrizMascara(matriz, a);
 			printf("\n");
 			return 0;
 		}
