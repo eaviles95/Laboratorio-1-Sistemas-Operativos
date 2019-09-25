@@ -148,6 +148,7 @@ OBJECTS := $(patsubst $(SRC)/%.c, $(OBJ)/%.o, $(SOURCES))
 all: main
 	$(eval LOCAL=true)
 	@echo "$(PUR_COLOR)Ejecutable generado!$(NO_COLOR) Nombre: $(OK_COLOR)$(EXECUTABLE_NAME)$(NO_COLOR) "
+	make -C src/pipeline all
 
 
 main: $(OBJECTS)
