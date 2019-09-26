@@ -101,7 +101,6 @@ int** crearMatrizMascara(char** matriz,int lineas){
 	return mtx;
 }
 
-
 int** crearMatrizVacia(int numero)
 {
 	int ** matriz;
@@ -117,19 +116,23 @@ int** crearMatrizVacia(int numero)
 
 	int j;
 	i =0;
-	
 	while(i<numero)
 	{
 		j=0;
 		while(j<numero)
 		{
 			matriz[i][j] = 3;
-			printf("%d ", matriz[i][j]);
+			//printf("%d ", matriz[i][j]);
 			j++;
 		}
-		printf("\n");
+		//printf("\n");
 		i++;
 	}
+	
+	matriz[1][1] = 2;
+	matriz[2][1] = 5;
+	matriz[1][2] = 6;
+
 
 
 	return matriz;
@@ -138,46 +141,55 @@ int** crearMatrizVacia(int numero)
 void matrices(int** mtx1, int** mtx2){
    
    
-    int i,j, k;
-	int** resultado = (int**) malloc(sizeof(int*));
-    printf("Introduce 6 valores para la primera matriz:\n");
+    int i,j, k, c, d;
+	int temporal = 0 ;
+	int** resultado = (int**)malloc(sizeof(int*)*3);
     for(i=0;i<3;i++){
         for(j=0;j<3;j++){
-        	printf("%d",mtx1[i][j]);
-            }
-			printf("\n");
+
+        	printf("%d ",mtx1[i][j]);
         }
- 
-        printf("Introduce 6 valores para la segunda matriz:\n");
-        for(i=0;i<3;i++){
-            for(j=0;j<3;j++){
-        	printf("%d",mtx2[i][j]);
-            }
-			printf("\n");
+		printf("\n");
+    }
+	printf("\n");
 
-        }
-        printf("***LA MATRIZ PRODUCTO DE LAS 2 INDICADAS ES:\n");
-
-	
-	for (i = 0 ; i < 3 ; i++ ) //i para las filas de la matriz resultante
-	{
-		resultado[i] = (int*) malloc(sizeof(int));
-
-		for (k = 0 ; k < 3 ; k++ ) // k para las columnas de la matriz resultante
-		{
-			int temporal = 0 ;
-			for (j = 0 ; j < 2 ; j++ ) //j para realizar la multiplicacion de 
-					{                                   //los elementos   de la matriz
-				temporal += mtx1[i][j] * mtx2[j][k];
-				resultado[i][k] = temporal ;
-				printf("%d ", resultado[i][k]);
-				}
-			printf("\n");
-
-			}
+	for(i=0;i<3;i++){
+		for(j=0;j<3;j++){
+		printf("%d ",mtx2[i][j]);
+		}
+		printf("\n");
 
 	}
+    printf("***LA MATRIZ PRODUCTO DE LAS 2 INDICADAS ES:\n");
 
+	for(i=0; i<3; ++i){
+		resultado[i] = (int*) malloc(sizeof(int)*3);
+        for(j=0; j<3; ++j)
+        {
+            resultado[i][j] = 0;
+        }
+	}
+	
+	for ( i = 0; i < 3; i++)
+	{
+		for (j = 0; j < 3; j++)
+		{
+			for (k = 0; k < 3; k++)
+			{
+				resultado[i][j] += mtx1[i][k]*mtx2[k][j];
+			}	
+		}
+	}
+	for ( i = 0; i < 3; i++)
+	{
+		for (j = 0; j < 3; j++)
+		{
+			printf("%d ", resultado[i][j]);			
+		}
+		printf("\n");
+		
+	}
+	
 }
 
 
