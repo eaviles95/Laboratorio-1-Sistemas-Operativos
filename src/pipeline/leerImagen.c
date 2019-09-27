@@ -1,10 +1,4 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <unistd.h>
-#include <pthread.h>
-#include <sys/wait.h>
-#include "../../incl/pipeline/leerImagen.h"
+#include "../../incl/cabeceras.h"
 
 // Primera etapa del pipeline
 int main(int argc, char *argv[])
@@ -39,8 +33,47 @@ int main(int argc, char *argv[])
         close(tuberia[0]);
         close(tuberia[1]);
 
-        // Mensaje de prueba del pipe
-        write(STDOUT_FILENO, "Este", 5);
+        // Proceso de lectura de la imagen
+        FILE *fp;
+        png_structp pngPtr;
+        png_infop infoPtr;
+        png_uint_32 ancho;
+        png_uint_32 alto;
+        png_bytepp filas;
+        png_bytep fila;
+        png_byte pixel;
+
+        char *nombre = "imagen.png";
+        int i, j;
+
+        fp = fopen(nombre, "rb");
+        pngPtr = png_create_read_struct(PNG_LIBPNG_VER_STRING, NULL, NULL, NULL);
+        infoPtr = png_create_info_struct(pngPtr);
+
+        png_init_io(pngPtr, fp);
+        png_read_png(pngPtr, infoPtr, 0, 0);
+        png_get_IHDR(pngPtr, infoPtr, &ancho, &alto, NULL, NULL, NULL, NULL, NULL);
+
+        int matriz[alto][ancho];
+        int dimensiones[2];
+        
+        dimensiones[0] = alto;
+        dimensiones[1] = ancho;
+
+        filas = png_get_rows(pngPtr, infoPtr);
+        for (i = 0; i < alto; i++)
+        {
+            fila = filas[i];
+            for (j = 0; j < ancho; j++)
+            {
+                pixel = fila[j];
+                matriz[i][j] = pixel;
+            }
+        }
+
+        // Envio de la matriz por el pipe
+        write(STDOUT_FILENO, dimensiones, 2*sizeof(int));
+        write(STDOUT_FILENO, matriz, alto * ancho * sizeof(int));
         wait(NULL);
     }
 

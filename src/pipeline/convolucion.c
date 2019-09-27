@@ -1,10 +1,4 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <unistd.h>
-#include <pthread.h>
-#include <sys/wait.h>
-#include "../../incl/pipeline/convolucion.h"
+#include "../../incl/cabeceras.h"
 
 // Segunda etapa del pipeline
 int main(int argc, char *argv[])
@@ -35,16 +29,21 @@ int main(int argc, char *argv[])
     else // Soy el padre
     {
         // Se conecta el STDOUT del padre con el write del pipe
-        dup2(tuberia[1], STDOUT_FILENO);
+        //dup2(tuberia[1], STDOUT_FILENO);
         close(tuberia[0]);
         close(tuberia[1]);
 
-        // Mensaje de prueba del pipe
-        char leer[100];
-        read(STDIN_FILENO, leer, 10);
-        strcat(leer, " mensaje");
+        int dimensiones[2]; // [alto][ancho]
+        read(STDIN_FILENO, dimensiones, 2*sizeof(int));
 
-        write(STDOUT_FILENO, leer, 100);
+        int matriz[dimensiones[0]][dimensiones[1]];
+        read(STDIN_FILENO, matriz, dimensiones[0] * dimensiones[1] * sizeof(int));
+        
+        /* De aqui en adelante ya se puede trabajar sobre la matriz */
+
+
+
+        /*      */
         wait(NULL);
     }
 

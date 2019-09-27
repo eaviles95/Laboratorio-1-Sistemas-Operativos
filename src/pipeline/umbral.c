@@ -1,10 +1,4 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <unistd.h>
-#include <pthread.h>
-#include <sys/wait.h>
-#include "../../incl/pipeline/umbral.h"
+#include "../../incl/cabeceras.h"
 
 // Quinta etapa del pipeline
 int main(int argc, char *argv[])
@@ -39,12 +33,6 @@ int main(int argc, char *argv[])
         close(tuberia[0]);
         close(tuberia[1]);
 
-        // Mensaje de prueba del pipe
-        char leer[100];
-        read(STDIN_FILENO, leer, 100);
-        strcat(leer, " del pipe");
-
-        write(STDOUT_FILENO, leer, 100);
         wait(NULL);
     }
 
