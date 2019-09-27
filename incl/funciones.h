@@ -10,6 +10,6 @@ char** extraerLineas(char *nombre,int lineas);
 char* quitarEspacios(char frase[]);
 
 int** crearMatrizMascara(char** matriz,int lineas);
-void matrices(int** mtx1, int** mtx2);
+int** matrices(int** mtx1, int** mtx2);
 int** crearMatrizVacia(int numero);
 #endif

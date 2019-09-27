@@ -122,23 +122,18 @@ int** crearMatrizVacia(int numero)
 		while(j<numero)
 		{
 			matriz[i][j] = 3;
-			//printf("%d ", matriz[i][j]);
 			j++;
 		}
-		//printf("\n");
 		i++;
 	}
 	
 	matriz[1][1] = 2;
 	matriz[2][1] = 5;
 	matriz[1][2] = 6;
-
-
-
 	return matriz;
 }
 
-void matrices(int** mtx1, int** mtx2){
+int** matrices(int** mtx1, int** mtx2){
    
    
     int i,j, k, c, d;
@@ -180,17 +175,20 @@ void matrices(int** mtx1, int** mtx2){
 			}	
 		}
 	}
+	return resultado;
+}
+
+int sumarMatriz(int** matriz){
+	int i, j, acumulador;
+	acumulador =0;
 	for ( i = 0; i < 3; i++)
 	{
 		for (j = 0; j < 3; j++)
 		{
-			printf("%d ", resultado[i][j]);			
+			acumulador+= matriz[i][j];
 		}
-		printf("\n");
-		
 	}
-	
+	acumulador = acumulador/9;
+	return acumulador;
 }
-
-
 
