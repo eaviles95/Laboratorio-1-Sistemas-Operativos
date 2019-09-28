@@ -29,7 +29,7 @@ int main(int argc, char *argv[])
     else // Soy el padre
     {
         // Se conecta el STDOUT del padre con el write del pipe
-        //dup2(tuberia[1], STDOUT_FILENO);
+        dup2(tuberia[1], STDOUT_FILENO);
         close(tuberia[0]);
         close(tuberia[1]);
 
@@ -43,7 +43,11 @@ int main(int argc, char *argv[])
 
 
 
-        /*      */
+        /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
+
+        // Envio de la matriz por el pipe
+        write(STDOUT_FILENO, dimensiones, 2*sizeof(int));
+        write(STDOUT_FILENO, matriz, dimensiones[0] * dimensiones[1] * sizeof(int));
         wait(NULL);
     }
 
