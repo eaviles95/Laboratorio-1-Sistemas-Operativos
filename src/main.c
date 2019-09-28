@@ -58,15 +58,13 @@ int main(int argc, char **argv)
 			//execvp("src/pipeline/leerImagen.out", args);
 
 			int a = obtenerCantLineas(archivoMascara);
-			char h[] = "1 2 3";
 			char **matriz = extraerLineas(archivoMascara, a);
 
 			int** mtxMascara = crearMatrizMascara(matriz, a);
-			int** imagen = crearMatrizVacia(3);
-			int** mt = matrices(imagen, mtxMascara);
-			sumarMatriz(mt);
-
-			printf("\n");
+			int** imagen = crearMatrizVacia(11);
+			//int** mt = matrices(imagen, mtxMascara);
+			//sumarMatriz(mt);
+			obtenerMatriz(imagen, 11, 11, 1, 2);
 			return 0;
 		}
 	}

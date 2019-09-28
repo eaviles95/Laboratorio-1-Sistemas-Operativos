@@ -116,20 +116,18 @@ int** crearMatrizVacia(int numero)
 
 	int j;
 	i =0;
+	int k = 0;
 	while(i<numero)
 	{
 		j=0;
 		while(j<numero)
 		{
-			matriz[i][j] = 3;
+			matriz[i][j] = k;
 			j++;
+			k++;
 		}
 		i++;
 	}
-	
-	matriz[1][1] = 2;
-	matriz[2][1] = 5;
-	matriz[1][2] = 6;
 	return matriz;
 }
 
@@ -191,4 +189,46 @@ int sumarMatriz(int** matriz){
 	acumulador = acumulador/9;
 	return acumulador;
 }
+
+int** obtenerMatriz(int** m, int filas, int columnas, int x, int y){
+	int i, j;
+	int** posicion = (int*)malloc(sizeof(int)*3);
+	for ( i = 0; i < 3; i++)
+	{
+		posicion[i] = (int*)malloc(sizeof(int)*3);
+	}
+	/*
+	for (i = 0; i < filas; i++)
+	{
+		for (j = 0; j < columnas; j++)
+		{
+			printf("%d ", m[i][j]);
+		}
+		printf("\n");
+	}*/
+
+	posicion[0][0] = m[x][y];
+	posicion[0][1] = m[x][y+1];
+	posicion[0][2] = m[x][y+2];
+
+	posicion[1][0] = m[x+1][y];
+	posicion[1][1] = m[x+1][y+1];
+	posicion[1][2] = m[x+1][y+2];
+
+	posicion[2][0] = m[x+2][y];
+	posicion[2][1] = m[x+2][y+1];
+	posicion[2][2] = m[x+2][y+2];
+
+	for (i = 0; i < 3; i++)
+	{
+		for (j = 0; j < 3; j++)
+		{
+			printf("%d ", posicion[i][j]);
+		}
+		printf("\n");
+	}
+	return posicion;
+	
+}
+
 
