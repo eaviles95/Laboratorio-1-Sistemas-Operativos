@@ -23,7 +23,7 @@ int main(int argc, char *argv[])
         close(tuberia[0]);
 
         // Se realiza un EXEC para reemplazar este proceso con la quinta etapa del pipeline
-        char *args[] = {"umbral.out", NULL};
+        char *args[] = {"umbral.out", argv[1], argv[2], NULL};
         execvp("src/pipeline/umbral.out", args);
     }
     else // Soy el padre

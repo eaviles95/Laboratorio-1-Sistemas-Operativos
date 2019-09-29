@@ -268,7 +268,10 @@ int** normalizarMatriz(int** matrizConv, int filas, int columnas){
 
 // Segunda etapa del pipeline
 int main(int argc, char *argv[])
-{
+{   
+    // Nombre del archivo con la mascara
+    char *archivoMascara = argv[1];
+
     // Creacion de pipe convolucion->normalizacion
     int tuberia[2];
     pipe(tuberia);
@@ -289,11 +292,14 @@ int main(int argc, char *argv[])
         close(tuberia[0]);
 
         // Se realiza un EXEC para reemplazar este proceso con la tercera etapa del pipeline
-        char *args[] = {"normalizacion.out", NULL};
+        char *args[] = {"normalizacion.out", argv[2], argv[3], NULL};
         execvp("src/pipeline/normalizacion.out", args);
     }
     else // Soy el padre
     {
+        // Nombre del archivo de la mascara
+        char *archivoMascara = argv[1];
+
         // Se conecta el STDOUT del padre con el write del pipe
         dup2(tuberia[1], STDOUT_FILENO);
         close(tuberia[0]);
@@ -304,11 +310,11 @@ int main(int argc, char *argv[])
 
         int matriz[dimensiones[0]][dimensiones[1]];
         read(STDIN_FILENO, matriz, dimensiones[0] * dimensiones[1] * sizeof(int));
-        
         /* De aqui en adelante ya se puede trabajar sobre la matriz */
+        /*
         int a = obtenerCantLineas(archivoMascara);
 		char **matriz = extraerLineas(archivoMascara, a);
-
+        */
 
 
         /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/

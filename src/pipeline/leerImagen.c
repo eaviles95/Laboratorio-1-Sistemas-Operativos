@@ -23,11 +23,14 @@ int main(int argc, char *argv[])
         close(tuberia[0]);
 
         // Se realiza un EXEC para reemplazar este proceso con la segunda etapa del pipeline
-        char *args[] = {"convolucion.out", NULL};
+        char *args[] = {"convolucion.out", argv[2], argv[3], argv[4], NULL};
         execvp("src/pipeline/convolucion.out", args);
     }
     else // Soy el padre
     {
+        // Cantidad de imagenes a procesar
+        int cantImagenes = atoi(argv[1]);
+
         // Se conecta el STDOUT del padre con el write del pipe
         dup2(tuberia[1], STDOUT_FILENO);
         close(tuberia[0]);

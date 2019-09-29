@@ -23,7 +23,7 @@ int main(int argc, char *argv[])
         close(tuberia[0]);
 
         // Se realiza un EXEC para reemplazar este proceso con la cuarta etapa del pipeline
-        char *args[] = {"pooling.out", NULL};
+        char *args[] = {"pooling.out", argv[1], argv[2], NULL};
         execvp("src/pipeline/pooling.out", args);
     }
     else // Soy el padre

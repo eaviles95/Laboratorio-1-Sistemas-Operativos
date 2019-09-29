@@ -54,8 +54,8 @@ int main(int argc, char **argv)
 		else
 		{
 			// Se realiza un EXEC para reemplazar este proceso con la primera etapa del pipeline
-			char *args[] = {"leerImagen.out", NULL};
-			//execvp("src/pipeline/leerImagen.out", args);
+			char *args[] = {"leerImagen.out", argv[2], argv[4], argv[6], argv[7], NULL};
+			execvp("src/pipeline/leerImagen.out", args);
 			
 			int a = obtenerCantLineas(archivoMascara);
 			char **matriz = extraerLineas(archivoMascara, a);
