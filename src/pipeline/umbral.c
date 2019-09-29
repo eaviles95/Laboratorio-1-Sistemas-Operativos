@@ -43,31 +43,34 @@ int main(int argc, char *argv[])
         read(STDIN_FILENO, matriz, dimensiones[0] * dimensiones[1] * sizeof(int));
         
         /* De aqui en adelante ya se puede trabajar sobre la matriz */
-        /*
         int i,j;
         int cercaDeNegro = 0;
         for (i = 0; i < dimensiones[0]; i++)
         {
             for (j = 0; j < dimensiones[1]; j++)
             {
-                if (matriz[i][j] > 220)
+                if (matriz[i][j] > 230)
                 {
                     cercaDeNegro++;
                 }
             }
         }
+        
         int totalDePixeles = dimensiones[0] * dimensiones[1];
-        int porcentajeDeNegrura = (cercaDeNegro / porcentajeDeNegrura) * 100;
-        */
+        int porcentajeDeNegrura = (cercaDeNegro / totalDePixeles) * 100;
+
+        int resultado = 0;
+        if (porcentajeDeNegrura >= umbral)
+        {
+            resultado = 1;
+        }
 
         /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
 
         // Envio de la matriz por el pipe
-        /*
-        write(STDOUT_FILENO, porcentajeDeNegrura, sizeof(int));
+        write(STDOUT_FILENO, resultado, sizeof(int));
         write(STDOUT_FILENO, dimensiones, 2*sizeof(int));
         write(STDOUT_FILENO, matriz, dimensiones[0] * dimensiones[1] * sizeof(int));
-        */
         wait(NULL);
     }
 
