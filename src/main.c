@@ -5,6 +5,8 @@
 #include <string.h>
 #include "../incl/funciones.h"
 
+
+
 int main(int argc, char **argv)
 {
 	if (argc > 6)
@@ -56,23 +58,6 @@ int main(int argc, char **argv)
 			// Se realiza un EXEC para reemplazar este proceso con la primera etapa del pipeline
 			char *args[] = {"leerImagen.out", argv[2], argv[4], argv[6], argv[7], NULL};
 			execvp("src/pipeline/leerImagen.out", args);
-			
-			int a = obtenerCantLineas(archivoMascara);
-			char **matriz = extraerLineas(archivoMascara, a);
-
-			int** mtxMascara = crearMatrizMascara(matriz, a);
-
-			//int** masc = mascara(archivoMascara);
-
-			int** imagen = crearMatrizVacia(9);
-			//int** mt = matrices(imagen, mtxMascara);
-
-			int** m = matrizConvolucion(imagen, mtxMascara, 9,9);
-			//printf("%d", m[0][0]);
-			normalizarMatriz(m, 9, 9);
-
-			//sumarMatriz(mt);
-			//obtenerMatriz(imagen, 11, 11, 1, 2);
 			return 0;
 		}
 	}

@@ -21,28 +21,21 @@ int obtenerCantLineas(char *nombreArchivo){
 	return contador;
 }
 
-
 char** extraerLineas(char *nombre,int lineas){
     char** palabra=(char**)malloc(sizeof(char*)*100);
-    //printf("-----Leyendo archivo %s...------\n",nombre);
-	// se indica que se quiere leer el archivo para lectura.
     char linea[1024];
     FILE *fich;
  
     fich = fopen(nombre, "r");
-    //Lee línea a línea y escribe en pantalla hasta el fin de fichero
 	int i = 0;
     while(fgets(linea, 1024, (FILE*) fich)) {
 		palabra[i] = (char*)malloc(sizeof(char));
 		strcat(palabra[i],linea);
-        //printf("LINEA: %s", palabra[i]);
 		i=i+1;
     }
-	//printf("\n------Fin de la lectura del archivo.----\n");
     fclose(fich);
 	return palabra;
 }
-
 
 char* quitarEspacios(char frase[]){
     char* palabras;
@@ -55,13 +48,8 @@ char* quitarEspacios(char frase[]){
         palabras=strtok(0," ");
         linea[i+1] = palabras[0];
     }
-	for (i = 0; i < strlen(linea); i++)
-	{
-        //printf("%c", linea[i]);		
-	}
 	return linea;
 }
-
 
 int** crearMatrizMascara(char** matriz,int lineas){
 	char** matrizAux = (char**)malloc(sizeof(char*));
@@ -71,7 +59,6 @@ int** crearMatrizMascara(char** matriz,int lineas){
 	{
 		matrizAux[i] = (char*)malloc(sizeof(char));
 		matrizAux[i] = quitarEspacios(matriz[i]);
-		//printf("%s\n", matrizAux[i]);
 	}
 	for ( i = 0; i < 3; i++)
 	{
@@ -80,40 +67,17 @@ int** crearMatrizMascara(char** matriz,int lineas){
 		{
 			//se resta '0' para obtener el valor entero del caracter
 			mtx[i][j] = matrizAux[i][j] - '0';
-			//printf("%d", mtx[i][j]);
 		}
-		//printf("\n");
 	}
 	i = 0;
 	return mtx;
 }
 
-
-
-
-//Multiplica matrices
 int** matrices(int** mtx1, int** mtx2){
     int i,j, k, c, d;
 	int temporal = 0 ;
 	int** resultado = (int**)malloc(sizeof(int*)*3);
-    /*for(i=0;i<3;i++){
-        
-		for(j=0;j<3;j++){
-
-        	printf("%d ",mtx1[i][j]);
-        }
-		printf("\n");
-    }
-	printf("\n");
-
-	for(i=0;i<3;i++){
-		for(j=0;j<3;j++){
-		printf("%d ",mtx2[i][j]);
-		}
-		printf("\n");
-	}
-    printf("***LA MATRIZ PRODUCTO DE LAS 2 INDICADAS ES:\n");
-	*/
+    
 	for(i=0; i<3; ++i){
 		resultado[i] = (int*) malloc(sizeof(int)*3);
         for(j=0; j<3; ++j)
@@ -132,13 +96,7 @@ int** matrices(int** mtx1, int** mtx2){
 			}	
 		}
 	}
-	/*
-	for(i=0;i<3;i++){
-		for(j=0;j<3;j++){
-		printf("%2d ", resultado[i][j]);
-		}
-		printf("\n");
-	}*/
+	
 	return resultado;
 }
 
@@ -153,7 +111,6 @@ int sumarMatriz(int** matriz){
 		}
 	}
 	acumulador = acumulador/9;
-	//printf("%d", acumulador);
 	return acumulador;
 }
 
@@ -164,15 +121,7 @@ int** obtenerMatriz(int** m, int filas, int columnas, int x, int y){
 	{
 		posicion[i] = (int*)malloc(sizeof(int)*3);
 	}
-	/*
-	for (i = 0; i < filas; i++)
-	{
-		for (j = 0; j < columnas; j++)
-		{
-			printf("%d ", m[i][j]);
-		}
-		printf("\n");
-	}*/
+	
 
 	posicion[0][0] = m[x][y];
 	posicion[0][1] = m[x][y+1];
@@ -186,18 +135,10 @@ int** obtenerMatriz(int** m, int filas, int columnas, int x, int y){
 	posicion[2][1] = m[x+2][y+1];
 	posicion[2][2] = m[x+2][y+2];
 
-	/*for (i = 0; i < 3; i++)
-	{
-		for (j = 0; j < 3; j++)
-		{
-			printf("%d ", posicion[i][j]);
-		}
-		printf("\n");
-	}*/
+	
 	return posicion;
 	
 }
-
 
 int convolucion(int** matriz1, int** matriz2, int filas, int columnas, int x, int y){
 	int** miniImagen = obtenerMatriz(matriz1, filas, columnas, x, y);
@@ -207,10 +148,7 @@ int convolucion(int** matriz1, int** matriz2, int filas, int columnas, int x, in
 	int conv = sumarMatriz(matrizConv);
 
 	return conv;
-
-
 }
-
 
 int** matrizConvolucion(int** matriz1, int** matriz2, int filas, int columnas){
 	int filaAux = filas - 2;
@@ -218,7 +156,6 @@ int** matrizConvolucion(int** matriz1, int** matriz2, int filas, int columnas){
 	int i, j;
 	int** mtxConv = (int**)malloc(sizeof(int*)*filaAux);
 	int conv = 0;
-	//printf("La matriz convolucion es la siguiente: \n");
 	for ( i = 0; i < filaAux; i++)
 	{
 		mtxConv[i] = (int*)malloc(sizeof(int)*columnaAux);
@@ -226,16 +163,10 @@ int** matrizConvolucion(int** matriz1, int** matriz2, int filas, int columnas){
 		{
 			conv = convolucion(matriz1, matriz2, filas, columnas, i, j);
 			mtxConv[i][j]=conv;
-			//printf("%2d ", mtxConv[i][j]);
-		}
-		//printf("\n");
-		
+		}		
 	}
-
-	return mtxConv;
-	
+	return mtxConv;	
 }
-
 
 int** normalizarMatriz(int** matrizConv, int filas, int columnas){
 	int i, j;
@@ -253,20 +184,8 @@ int** normalizarMatriz(int** matrizConv, int filas, int columnas){
 		}
 	}
 
-	for ( i = 0; i < filas-2; i++)
-	{
-		for (j = 0; j < columnas -2; j++)
-		{
-			//printf("%2d ", matrizConv[i][j]);
-		}
-		//printf("\n");
-		
-	}
 	return matrizConv;	
 }
-
-
-
 
 // Segunda etapa del pipeline
 int main(int argc, char *argv[])
@@ -319,7 +238,6 @@ int main(int argc, char *argv[])
         
         int** mtxMascara = crearMatrizMascara(matriz1, a);
 
-
         int i, j;
         int** mtx = (int**)malloc(sizeof(int*)*dimensiones[0]);
         for (i = 0; i < dimensiones[0]; i++)
@@ -330,7 +248,6 @@ int main(int argc, char *argv[])
                 mtx[i][j] = matriz[i][j];
             }
         }
-        
 
 		int** matrizConv = matrizConvolucion(mtx, mtxMascara, dimensiones[0],dimensiones[1]);
 
@@ -347,7 +264,6 @@ int main(int argc, char *argv[])
             } 
         }
 
-
         int dimNuevo[2];
 
         dimNuevo[0] = dimColumna;
@@ -360,7 +276,5 @@ int main(int argc, char *argv[])
         write(STDOUT_FILENO, matrizNueva, dimFila * dimColumna * sizeof(int));
         wait(NULL);
     }
-
-
     return 0;
 }

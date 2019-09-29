@@ -8,16 +8,6 @@ int** obtenerMtx(int** m, int filas, int columnas, int x, int y){
 	{
 		posicion[i] = (int*)malloc(sizeof(int)*3);
 	}
-	/*
-	for (i = 0; i < filas; i++)
-	{
-		for (j = 0; j < columnas; j++)
-		{
-			printf("%d ", m[i][j]);
-		}
-		printf("\n");
-	}*/
-
 	posicion[0][0] = m[x][y];
 	posicion[0][1] = m[x][y+1];
 	posicion[0][2] = m[x][y+2];
@@ -30,18 +20,8 @@ int** obtenerMtx(int** m, int filas, int columnas, int x, int y){
 	posicion[2][1] = m[x+2][y+1];
 	posicion[2][2] = m[x+2][y+2];
 
-	/*for (i = 0; i < 3; i++)
-	{
-		for (j = 0; j < 3; j++)
-		{
-			printf("%d ", posicion[i][j]);
-		}
-		printf("\n");
-	}*/
-	return posicion;
-	
+	return posicion;	
 }
-
 
 int* matrizPooling(int** matriz){
     int* mtx = (int*)malloc(sizeof(int*)*9);
@@ -83,7 +63,6 @@ int pooling(int** matriz1, int filas, int columnas, int x, int y){
 	return datoPooling;
 }
 
-
 int** generarPooling(int** matriz1, int filas, int columnas){
 	int filaAux = filas - 2;
 	int columnaAux = columnas - 2;
@@ -98,16 +77,10 @@ int** generarPooling(int** matriz1, int filas, int columnas){
 		{
 			pool = pooling(matriz1, filas, columnas, i, j);
             mtxPooling[i][j] = pool;
-			//printf("%2d ", mtxConv[i][j]);
-		}
-		//printf("\n");
-		
+		}		
 	}
-
-	return mtxPooling;
-	
+	return mtxPooling;	
 }
-
 
 // Cuarta etapa del pipeline
 int main(int argc, char *argv[])
