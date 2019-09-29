@@ -1,4 +1,6 @@
 #include "../../incl/cabeceras.h"
+#include "../../incl/convolucion.h"
+
 
 
 
@@ -78,9 +80,9 @@ int** crearMatrizMascara(char** matriz,int lineas){
 		{
 			//se resta '0' para obtener el valor entero del caracter
 			mtx[i][j] = matrizAux[i][j] - '0';
-			//printf("%d", mtx[i][j]);
+			printf("%d", mtx[i][j]);
 		}
-		//printf("\n");
+		printf("\n");
 	}
 	i = 0;
 	return mtx;
@@ -311,17 +313,51 @@ int main(int argc, char *argv[])
         int matriz[dimensiones[0]][dimensiones[1]];
         read(STDIN_FILENO, matriz, dimensiones[0] * dimensiones[1] * sizeof(int));
         /* De aqui en adelante ya se puede trabajar sobre la matriz */
-        /*
+        
         int a = obtenerCantLineas(archivoMascara);
-		char **matriz = extraerLineas(archivoMascara, a);
-        */
+		char **matriz1 = extraerLineas(archivoMascara, a);
+        
+        int** mtxMascara = crearMatrizMascara(matriz1, a);
 
+
+        int i, j;
+        int** mtx = (int**)malloc(sizeof(int*)*dimensiones[0]);
+        for (i = 0; i < dimensiones[0]; i++)
+        {
+            mtx[i] = (int*)malloc(sizeof(int)*dimensiones[1]); 
+            for ( j = 0; j < dimensiones[1]; j++)
+            {
+                mtx[i][j] = matriz[i][j];
+            }
+        }
+        
+
+		int** matrizConv = matrizConvolucion(mtx, mtxMascara, dimensiones[0],dimensiones[1]);
+
+        int dimFila = dimensiones[0]-2;
+        int dimColumna = dimensiones[1]-2;
+
+        int matrizNueva[dimColumna][dimFila];
+
+        for (i = 0; i < dimColumna; i++)
+        {
+            for (j = 0; j < dimFila; j++)
+            {
+                matrizNueva[i][j] = matrizConv[i][j];
+            } 
+        }
+
+
+        int dimNuevo[2];
+
+        dimNuevo[0] = dimColumna;
+        dimNuevo[1] = dimFila;
 
         /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
 
         // Envio de la matriz por el pipe
-        write(STDOUT_FILENO, dimensiones, 2*sizeof(int));
-        write(STDOUT_FILENO, matriz, dimensiones[0] * dimensiones[1] * sizeof(int));
+        write(STDOUT_FILENO, dimNuevo, 2*sizeof(int));
+        write(STDOUT_FILENO, matrizNueva, dimFila * dimColumna * sizeof(int));
         wait(NULL);
     }
 
