@@ -56,7 +56,7 @@ int main(int argc, char **argv)
 			// Se realiza un EXEC para reemplazar este proceso con la primera etapa del pipeline
 			char *args[] = {"leerImagen.out", NULL};
 			//execvp("src/pipeline/leerImagen.out", args);
-
+			
 			int a = obtenerCantLineas(archivoMascara);
 			char **matriz = extraerLineas(archivoMascara, a);
 
@@ -67,7 +67,9 @@ int main(int argc, char **argv)
 			int** imagen = crearMatrizVacia(9);
 			//int** mt = matrices(imagen, mtxMascara);
 
-			convolucion(imagen, mtxMascara, 9,9, 0,0);
+			int** m = matrizConvolucion(imagen, mtxMascara, 9,9);
+			//printf("%d", m[0][0]);
+			normalizarMatriz(m, 9, 9);
 
 			//sumarMatriz(mt);
 			//obtenerMatriz(imagen, 11, 11, 1, 2);

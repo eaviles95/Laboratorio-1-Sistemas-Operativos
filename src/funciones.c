@@ -34,10 +34,9 @@ int obtenerCantLineas(char *nombreArchivo){
 }
 
 
-
 char** extraerLineas(char *nombre,int lineas){
     char** palabra=(char**)malloc(sizeof(char*)*100);
-    printf("-----Leyendo imagen %s...------\n",nombre);
+    printf("-----Leyendo archivo %s...------\n",nombre);
 	// se indica que se quiere leer el archivo para lectura.
     char linea[1024];
     FILE *fich;
@@ -48,10 +47,10 @@ char** extraerLineas(char *nombre,int lineas){
     while(fgets(linea, 1024, (FILE*) fich)) {
 		palabra[i] = (char*)malloc(sizeof(char));
 		strcat(palabra[i],linea);
-        //printf("LINEA: %s", palabra[i]);
+        printf("LINEA: %s", palabra[i]);
 		i=i+1;
     }
-	printf("\n------Fin de la lectura de la imagen.----\n");
+	printf("\n------Fin de la lectura del archivo.----\n");
     fclose(fich);
 	return palabra;
 }
@@ -100,14 +99,6 @@ int** crearMatrizMascara(char** matriz,int lineas){
 	i = 0;
 	return mtx;
 }
-/*
-int** mascara(char* nombreArchivo){
-	int a = obtenerCantLineas(nombreArchivo);
-	char** matriz = extraerLineas(nombreArchivo, a);
-	int** mtxMascara = crearMatrizMascara(matriz, a);
-	return mtxMascara;
-}
-*/
 
 int** crearMatrizVacia(int numero)
 {
@@ -130,7 +121,7 @@ int** crearMatrizVacia(int numero)
 		j=0;
 		while(j<numero)
 		{
-			matriz[i][j] = k;
+			matriz[i][j] = -k;
 			j++;
 			k++;
 		}
@@ -143,8 +134,9 @@ int** matrices(int** mtx1, int** mtx2){
     int i,j, k, c, d;
 	int temporal = 0 ;
 	int** resultado = (int**)malloc(sizeof(int*)*3);
-    for(i=0;i<3;i++){
-        for(j=0;j<3;j++){
+    /*for(i=0;i<3;i++){
+        
+		for(j=0;j<3;j++){
 
         	printf("%d ",mtx1[i][j]);
         }
@@ -159,7 +151,7 @@ int** matrices(int** mtx1, int** mtx2){
 		printf("\n");
 	}
     printf("***LA MATRIZ PRODUCTO DE LAS 2 INDICADAS ES:\n");
-
+	*/
 	for(i=0; i<3; ++i){
 		resultado[i] = (int*) malloc(sizeof(int)*3);
         for(j=0; j<3; ++j)
@@ -178,13 +170,13 @@ int** matrices(int** mtx1, int** mtx2){
 			}	
 		}
 	}
-
+	/*
 	for(i=0;i<3;i++){
 		for(j=0;j<3;j++){
 		printf("%2d ", resultado[i][j]);
 		}
 		printf("\n");
-	}
+	}*/
 	return resultado;
 }
 
@@ -199,7 +191,7 @@ int sumarMatriz(int** matriz){
 		}
 	}
 	acumulador = acumulador/9;
-	printf("%d", acumulador);
+	//printf("%d", acumulador);
 	return acumulador;
 }
 
@@ -232,14 +224,14 @@ int** obtenerMatriz(int** m, int filas, int columnas, int x, int y){
 	posicion[2][1] = m[x+2][y+1];
 	posicion[2][2] = m[x+2][y+2];
 
-	for (i = 0; i < 3; i++)
+	/*for (i = 0; i < 3; i++)
 	{
 		for (j = 0; j < 3; j++)
 		{
 			printf("%d ", posicion[i][j]);
 		}
 		printf("\n");
-	}
+	}*/
 	return posicion;
 	
 }
@@ -248,13 +240,67 @@ int** obtenerMatriz(int** m, int filas, int columnas, int x, int y){
 int convolucion(int** matriz1, int** matriz2, int filas, int columnas, int x, int y){
 	int** miniImagen = obtenerMatriz(matriz1, filas, columnas, x, y);
 
-	int** matrizConv = matrices(matriz1, matriz2);
+	int** matrizConv = matrices(miniImagen, matriz2);
 
 	int conv = sumarMatriz(matrizConv);
 
 	return conv;
 
 
+}
+
+
+int** matrizConvolucion(int** matriz1, int** matriz2, int filas, int columnas){
+	int filaAux = filas - 2;
+	int columnaAux = columnas - 2;
+	int i, j;
+	int** mtxConv = (int**)malloc(sizeof(int*)*filaAux);
+	int conv = 0;
+	printf("La matriz convolucion es la siguiente: \n");
+	for ( i = 0; i < filaAux; i++)
+	{
+		mtxConv[i] = (int*)malloc(sizeof(int)*columnaAux);
+		for (j = 0; j < columnaAux; j++)
+		{
+			conv = convolucion(matriz1, matriz2, filas, columnas, i, j);
+			mtxConv[i][j]=conv;
+			printf("%2d ", mtxConv[i][j]);
+		}
+		printf("\n");
+		
+	}
+
+	return mtxConv;
+	
+}
+
+
+int** normalizarMatriz(int** matrizConv, int filas, int columnas){
+	int i, j;
+	for ( i = 0; i < filas -2; i++)
+	{
+		for (j = 0; j < columnas -2; j++)
+		{
+			if (matrizConv[i][j] < 0)
+			{
+				matrizConv[i][j] = 0;
+			}
+			else{
+				matrizConv[i][j] = matrizConv[i][j];
+			}
+		}
+	}
+
+	for ( i = 0; i < filas-2; i++)
+	{
+		for (j = 0; j < columnas -2; j++)
+		{
+			printf("%2d ", matrizConv[i][j]);
+		}
+		printf("\n");
+		
+	}
+	return matrizConv;	
 }
 
 
