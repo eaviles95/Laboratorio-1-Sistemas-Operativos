@@ -61,10 +61,16 @@ int main(int argc, char **argv)
 			char **matriz = extraerLineas(archivoMascara, a);
 
 			int** mtxMascara = crearMatrizMascara(matriz, a);
-			int** imagen = crearMatrizVacia(11);
+
+			//int** masc = mascara(archivoMascara);
+
+			int** imagen = crearMatrizVacia(9);
 			//int** mt = matrices(imagen, mtxMascara);
+
+			convolucion(imagen, mtxMascara, 9,9, 0,0);
+
 			//sumarMatriz(mt);
-			obtenerMatriz(imagen, 11, 11, 1, 2);
+			//obtenerMatriz(imagen, 11, 11, 1, 2);
 			return 0;
 		}
 	}
