@@ -1,5 +1,117 @@
 #include "../../incl/cabeceras.h"
 
+
+int** obtenerMtx(int** m, int filas, int columnas, int x, int y){
+	int i, j;
+	int** posicion = (int**)malloc(sizeof(int*)*3);
+	for ( i = 0; i < 3; i++)
+	{
+		posicion[i] = (int*)malloc(sizeof(int)*3);
+	}
+	/*
+	for (i = 0; i < filas; i++)
+	{
+		for (j = 0; j < columnas; j++)
+		{
+			printf("%d ", m[i][j]);
+		}
+		printf("\n");
+	}*/
+
+	posicion[0][0] = m[x][y];
+	posicion[0][1] = m[x][y+1];
+	posicion[0][2] = m[x][y+2];
+
+	posicion[1][0] = m[x+1][y];
+	posicion[1][1] = m[x+1][y+1];
+	posicion[1][2] = m[x+1][y+2];
+
+	posicion[2][0] = m[x+2][y];
+	posicion[2][1] = m[x+2][y+1];
+	posicion[2][2] = m[x+2][y+2];
+
+	/*for (i = 0; i < 3; i++)
+	{
+		for (j = 0; j < 3; j++)
+		{
+			printf("%d ", posicion[i][j]);
+		}
+		printf("\n");
+	}*/
+	return posicion;
+	
+}
+
+
+int* matrizPooling(int** matriz){
+    int* mtx = (int*)malloc(sizeof(int*)*9);
+    mtx[0] = matriz[0][0];
+    mtx[1] = matriz[0][1];
+    mtx[2] = matriz[0][2];
+     
+    mtx[3] = matriz[1][0];
+    mtx[4] = matriz[1][1];
+    mtx[5] = matriz[1][2];
+
+    mtx[6] = matriz[2][0];
+    mtx[7] = matriz[2][1];
+    mtx[8] = matriz[2][2];
+    return mtx;
+}
+
+int buscarMayor(int* arreglo){
+    int mayor = 0;
+    int i, j;
+    for (i = 0; i < 9; i++)
+    {
+        if (arreglo[i]>mayor)
+        {
+            mayor = arreglo[i];
+        }
+    }
+    return mayor;
+}
+
+int pooling(int** matriz1, int filas, int columnas, int x, int y){
+	
+    int** miniImagen = obtenerMtx(matriz1, filas, columnas, x, y);
+
+	int* arregloPooling = matrizPooling(miniImagen);
+
+	int datoPooling = buscarMayor(arregloPooling);
+
+	return datoPooling;
+}
+
+
+int** generarPooling(int** matriz1, int filas, int columnas){
+	int filaAux = filas - 2;
+	int columnaAux = columnas - 2;
+	int i, j;
+	int** mtxPooling = (int**)malloc(sizeof(int*)*filaAux);
+	int pool = 0;
+	printf("La matriz convolucion es la siguiente: \n");
+	for ( i = 0; i < filaAux; i++)
+	{
+		mtxPooling[i] = (int*)malloc(sizeof(int)*columnaAux);
+		for (j = 0; j < columnaAux; j++)
+		{
+			pool = pooling(matriz1, filas, columnas, i, j);
+            mtxPooling[i][j] = pool;
+			//printf("%2d ", mtxConv[i][j]);
+		}
+		//printf("\n");
+		
+	}
+
+	return mtxPooling;
+	
+}
+
+
+
+
+
 // Cuarta etapa del pipeline
 int main(int argc, char *argv[])
 {
@@ -39,20 +151,7 @@ int main(int argc, char *argv[])
         int matriz[dimensiones[0]][dimensiones[1]];
         read(STDIN_FILENO, matriz, dimensiones[0] * dimensiones[1] * sizeof(int));
 
-
-        int a, b;
-        for (a = 0; a < dimensiones[0]; a++)
-        {
-            for (b = 0; b < dimensiones[1]; b++)
-            {
-                printf("%d ", matriz[a][b]);
-            }
-            printf("\n");
-        }
-
-        
         /* De aqui en adelante ya se puede trabajar sobre la matriz */
-        /*
         int nuevoAlto, nuevoAncho, altoPool, anchoPool;
 
         altoPool = 3;  // Dimensiones de la mascara de pooling.
@@ -65,17 +164,52 @@ int main(int argc, char *argv[])
         nuevasDimensiones[0] = nuevoAlto;
         nuevasDimensiones[1] = nuevoAncho;
 
-        int nuevaMatriz[nuevoAlto][nuevoAncho]; // Matriz con el resultado del pooling
+        int i, j;
+        int** mtx = (int**)malloc(sizeof(int*)*dimensiones[0]);
+        for (i = 0; i < dimensiones[0]; i++)
+        {
+            mtx[i] = (int*)malloc(sizeof(int)*dimensiones[1]); 
+            for ( j = 0; j < dimensiones[1]; j++)
+            {
+                mtx[i][j] = matriz[i][j];
+            }
+        }
+        
+        int dimFila = dimensiones[0]-2;
+        int dimColumna = dimensiones[1]-2;
+
+        int** mtxPooling =  generarPooling(mtx, dimensiones[0],dimensiones[1]);
+
+        int matrizNueva[dimColumna][dimFila];
+
+        for (i = 0; i < dimColumna; i++)
+        {
+            for (j = 0; j < dimFila; j++)
+            {
+                matrizNueva[i][j] = mtxPooling[i][j];
+            } 
+        }
+       
+        
+
+        
+        
+
+
+
+        //int nuevaMatriz[nuevoAlto][nuevoAncho]; // Matriz con el resultado del pooling
 
         // Proceso de pooling
-        int i, j, k, l, mayorValor;
+        
+        /*
+        int   k, l, mayorValor;
         int contAlto = 0;
         int contAncho = 0;
         for (i = 0; i < altoPool; i++)
         {
             for (j = 0; j < anchoPool; j++)
             {
-                // Se encuentra el mayor valor dentro del pedazo extraido y se guarda
+                 Se encuentra el mayor valor dentro del pedazo extraido y se guarda
                 mayorValor = 0;
                 for (k = contAlto; k < contAlto + altoPool; k++)
                 {
@@ -92,8 +226,18 @@ int main(int argc, char *argv[])
             }
             contAlto += 3;
             contAncho = 0;
+        }*/
+
+
+         for (i = 0; i < nuevoAlto; i++)
+        {
+            for (j = 0; j < nuevoAncho; j++)
+            {
+                printf("%d ", matrizNueva[i][j]);
+            } 
+            printf("\n");
         }
-        */
+
         /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
 
         // Envio de la matriz por el pipe
