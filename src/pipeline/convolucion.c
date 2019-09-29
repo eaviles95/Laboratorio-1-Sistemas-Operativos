@@ -24,7 +24,7 @@ int obtenerCantLineas(char *nombreArchivo){
 
 char** extraerLineas(char *nombre,int lineas){
     char** palabra=(char**)malloc(sizeof(char*)*100);
-    printf("-----Leyendo archivo %s...------\n",nombre);
+    //printf("-----Leyendo archivo %s...------\n",nombre);
 	// se indica que se quiere leer el archivo para lectura.
     char linea[1024];
     FILE *fich;
@@ -35,10 +35,10 @@ char** extraerLineas(char *nombre,int lineas){
     while(fgets(linea, 1024, (FILE*) fich)) {
 		palabra[i] = (char*)malloc(sizeof(char));
 		strcat(palabra[i],linea);
-        printf("LINEA: %s", palabra[i]);
+        //printf("LINEA: %s", palabra[i]);
 		i=i+1;
     }
-	printf("\n------Fin de la lectura del archivo.----\n");
+	//printf("\n------Fin de la lectura del archivo.----\n");
     fclose(fich);
 	return palabra;
 }
@@ -80,9 +80,9 @@ int** crearMatrizMascara(char** matriz,int lineas){
 		{
 			//se resta '0' para obtener el valor entero del caracter
 			mtx[i][j] = matrizAux[i][j] - '0';
-			printf("%d", mtx[i][j]);
+			//printf("%d", mtx[i][j]);
 		}
-		printf("\n");
+		//printf("\n");
 	}
 	i = 0;
 	return mtx;
@@ -218,7 +218,7 @@ int** matrizConvolucion(int** matriz1, int** matriz2, int filas, int columnas){
 	int i, j;
 	int** mtxConv = (int**)malloc(sizeof(int*)*filaAux);
 	int conv = 0;
-	printf("La matriz convolucion es la siguiente: \n");
+	//printf("La matriz convolucion es la siguiente: \n");
 	for ( i = 0; i < filaAux; i++)
 	{
 		mtxConv[i] = (int*)malloc(sizeof(int)*columnaAux);
@@ -226,9 +226,9 @@ int** matrizConvolucion(int** matriz1, int** matriz2, int filas, int columnas){
 		{
 			conv = convolucion(matriz1, matriz2, filas, columnas, i, j);
 			mtxConv[i][j]=conv;
-			printf("%2d ", mtxConv[i][j]);
+			//printf("%2d ", mtxConv[i][j]);
 		}
-		printf("\n");
+		//printf("\n");
 		
 	}
 
@@ -257,9 +257,9 @@ int** normalizarMatriz(int** matrizConv, int filas, int columnas){
 	{
 		for (j = 0; j < columnas -2; j++)
 		{
-			printf("%2d ", matrizConv[i][j]);
+			//printf("%2d ", matrizConv[i][j]);
 		}
-		printf("\n");
+		//printf("\n");
 		
 	}
 	return matrizConv;	

@@ -29,7 +29,7 @@ int main(int argc, char *argv[])
     else // Soy el padre
     {
         // Se conecta el STDOUT del padre con el write del pipe
-        dup2(tuberia[1], STDOUT_FILENO);
+        //dup2(tuberia[1], STDOUT_FILENO);
         close(tuberia[0]);
         close(tuberia[1]);
 
@@ -39,7 +39,20 @@ int main(int argc, char *argv[])
         int matriz[dimensiones[0]][dimensiones[1]];
         read(STDIN_FILENO, matriz, dimensiones[0] * dimensiones[1] * sizeof(int));
 
+
+        int a, b;
+        for (a = 0; a < dimensiones[0]; a++)
+        {
+            for (b = 0; b < dimensiones[1]; b++)
+            {
+                printf("%d ", matriz[a][b]);
+            }
+            printf("\n");
+        }
+
+        
         /* De aqui en adelante ya se puede trabajar sobre la matriz */
+        /*
         int nuevoAlto, nuevoAncho, altoPool, anchoPool;
 
         altoPool = 3;  // Dimensiones de la mascara de pooling.
@@ -62,7 +75,7 @@ int main(int argc, char *argv[])
         {
             for (j = 0; j < anchoPool; j++)
             {
-                /* Se encuentra el mayor valor dentro del pedazo extraido y se guarda*/
+                // Se encuentra el mayor valor dentro del pedazo extraido y se guarda
                 mayorValor = 0;
                 for (k = contAlto; k < contAlto + altoPool; k++)
                 {
@@ -75,17 +88,17 @@ int main(int argc, char *argv[])
                     }
                 }
                 nuevaMatriz[i][j] = mayorValor;
-                /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
                 contAncho += 3;
             }
             contAlto += 3;
             contAncho = 0;
         }
+        */
         /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
 
         // Envio de la matriz por el pipe
-        write(STDOUT_FILENO, nuevasDimensiones, 2 * sizeof(int));
-        write(STDOUT_FILENO, nuevaMatriz, nuevoAlto * nuevoAncho * sizeof(int));
+        //write(STDOUT_FILENO, nuevasDimensiones, 2 * sizeof(int));
+        //write(STDOUT_FILENO, nuevaMatriz, nuevoAlto * nuevoAncho * sizeof(int));
         wait(NULL);
     }
 
