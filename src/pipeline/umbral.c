@@ -23,11 +23,14 @@ int main(int argc, char *argv[])
         close(tuberia[0]);
 
         // Se realiza un EXEC para reemplazar este proceso con la sexta etapa del pipeline
-        char *args[] = {"guardar.out", argv[2], NULL};
+        char *args[] = {"guardar.out", argv[1], argv[3], NULL};
         execvp("src/pipeline/guardar.out", args);
     }
     else // Soy el padre
     {
+        // Cantidad de imagenes a procesar
+        int cantImagenes = atoi(argv[1]);
+
         // Umbral de negrura
         int umbral = atoi(argv[1]);
 
@@ -36,44 +39,44 @@ int main(int argc, char *argv[])
         close(tuberia[0]);
         close(tuberia[1]);
 
-        int dimensiones[2]; // [alto][ancho]
-        read(STDIN_FILENO, dimensiones, 2*sizeof(int));
-
-        int matriz[dimensiones[0]][dimensiones[1]];
-        read(STDIN_FILENO, matriz, dimensiones[0] * dimensiones[1] * sizeof(int));
-        
-        /* De aqui en adelante ya se puede trabajar sobre la matriz */
-        int i,j;
-        int cercaDeNegro = 0;
-        for (i = 0; i < dimensiones[0]; i++)
+        int verif = 0;
+        while (verif < cantImagenes)
         {
-            for (j = 0; j < dimensiones[1]; j++)
+            int dimensiones[2]; // [alto][ancho]
+            read(STDIN_FILENO, dimensiones, 2 * sizeof(int));
+
+            int matriz[dimensiones[0]][dimensiones[1]];
+            read(STDIN_FILENO, matriz, dimensiones[0] * dimensiones[1] * sizeof(int));
+
+            int i, j;
+            int cercaDeNegro = 0;
+            for (i = 0; i < dimensiones[0]; i++)
             {
-                if (matriz[i][j] > 230)
+                for (j = 0; j < dimensiones[1]; j++)
                 {
-                    cercaDeNegro++;
+                    if (matriz[i][j] > 230)
+                    {
+                        cercaDeNegro++;
+                    }
                 }
             }
+
+            int totalDePixeles = dimensiones[0] * dimensiones[1];
+            int porcentajeDeNegrura = (cercaDeNegro / totalDePixeles) * 100;
+
+            int resultado = 0;
+            if (porcentajeDeNegrura >= umbral)
+            {
+                resultado = 1;
+            }
+
+            // Envio de la matriz por el pipe
+            write(STDOUT_FILENO, &resultado, sizeof(int));
+            write(STDOUT_FILENO, dimensiones, 2 * sizeof(int));
+            write(STDOUT_FILENO, matriz, dimensiones[0] * dimensiones[1] * sizeof(int));
+            verif++;
         }
-        
-        int totalDePixeles = dimensiones[0] * dimensiones[1];
-        int porcentajeDeNegrura = (cercaDeNegro / totalDePixeles) * 100;
-
-        int resultado = 0;
-        if (porcentajeDeNegrura >= umbral)
-        {
-            resultado = 1;
-        }
-
-        /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
-
-        // Envio de la matriz por el pipe
-        write(STDOUT_FILENO, &resultado, sizeof(int));
-        write(STDOUT_FILENO, dimensiones, 2*sizeof(int));
-        write(STDOUT_FILENO, matriz, dimensiones[0] * dimensiones[1] * sizeof(int));
-        wait(NULL);
     }
-
-
+    wait(NULL);
     return 0;
 }

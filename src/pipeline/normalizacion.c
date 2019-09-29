@@ -23,42 +23,46 @@ int main(int argc, char *argv[])
         close(tuberia[0]);
 
         // Se realiza un EXEC para reemplazar este proceso con la cuarta etapa del pipeline
-        char *args[] = {"pooling.out", argv[1], argv[2], NULL};
+        char *args[] = {"pooling.out", argv[1], argv[2], argv[3], NULL};
         execvp("src/pipeline/pooling.out", args);
     }
     else // Soy el padre
     {
+        // Cantidad de imagenes a procesar
+        int cantImagenes = atoi(argv[1]);
+
         // Se conecta el STDOUT del padre con el write del pipe
         dup2(tuberia[1], STDOUT_FILENO);
         close(tuberia[0]);
         close(tuberia[1]);
 
-        int dimensiones[2]; // [alto][ancho]
-        read(STDIN_FILENO, dimensiones, 2*sizeof(int));
-
-        int matriz[dimensiones[0]][dimensiones[1]];
-        read(STDIN_FILENO, matriz, dimensiones[0] * dimensiones[1] * sizeof(int));
-        
-        /* De aqui en adelante ya se puede trabajar sobre la matriz */
-        int i,j;
-        for (i = 0; i < dimensiones[0]; i++)
+        int verif = 0;
+        while (verif < cantImagenes)
         {
-            for (j = 0; j < dimensiones[1]; j++)
+            int dimensiones[2]; // [alto][ancho]
+            read(STDIN_FILENO, dimensiones, 2 * sizeof(int));
+
+            int matriz[dimensiones[0]][dimensiones[1]];
+            read(STDIN_FILENO, matriz, dimensiones[0] * dimensiones[1] * sizeof(int));
+
+            int i, j;
+            for (i = 0; i < dimensiones[0]; i++)
             {
-                if (matriz[i][j] < 0)
+                for (j = 0; j < dimensiones[1]; j++)
                 {
-                    matriz[i][j] = 0;
+                    if (matriz[i][j] < 0)
+                    {
+                        matriz[i][j] = 0;
+                    }
                 }
             }
+
+            // Envio de la matriz por el pipe
+            write(STDOUT_FILENO, dimensiones, 2 * sizeof(int));
+            write(STDOUT_FILENO, matriz, dimensiones[0] * dimensiones[1] * sizeof(int));
+            verif++;
         }
-        /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
-
-        // Envio de la matriz por el pipe
-        write(STDOUT_FILENO, dimensiones, 2*sizeof(int));
-        write(STDOUT_FILENO, matriz, dimensiones[0] * dimensiones[1] * sizeof(int));
-        wait(NULL);
     }
-
-
+    wait(NULL);
     return 0;
 }
