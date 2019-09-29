@@ -109,9 +109,6 @@ int** generarPooling(int** matriz1, int filas, int columnas){
 }
 
 
-
-
-
 // Cuarta etapa del pipeline
 int main(int argc, char *argv[])
 {
@@ -141,7 +138,7 @@ int main(int argc, char *argv[])
     else // Soy el padre
     {
         // Se conecta el STDOUT del padre con el write del pipe
-        //dup2(tuberia[1], STDOUT_FILENO);
+        dup2(tuberia[1], STDOUT_FILENO);
         close(tuberia[0]);
         close(tuberia[1]);
 
@@ -189,60 +186,17 @@ int main(int argc, char *argv[])
                 matrizNueva[i][j] = mtxPooling[i][j];
             } 
         }
-       
-        
 
-        
-        
+        int nuevasDimensiones[2];
 
-
-
-        //int nuevaMatriz[nuevoAlto][nuevoAncho]; // Matriz con el resultado del pooling
-
-        // Proceso de pooling
-        
-        /*
-        int   k, l, mayorValor;
-        int contAlto = 0;
-        int contAncho = 0;
-        for (i = 0; i < altoPool; i++)
-        {
-            for (j = 0; j < anchoPool; j++)
-            {
-                 Se encuentra el mayor valor dentro del pedazo extraido y se guarda
-                mayorValor = 0;
-                for (k = contAlto; k < contAlto + altoPool; k++)
-                {
-                    for (l = contAncho; l < contAncho + anchoPool; l++)
-                    {
-                        if (matriz[k][l] > mayorValor)
-                        {
-                            mayorValor = matriz[k][l];
-                        }
-                    }
-                }
-                nuevaMatriz[i][j] = mayorValor;
-                contAncho += 3;
-            }
-            contAlto += 3;
-            contAncho = 0;
-        }*/
-
-
-         for (i = 0; i < nuevoAlto; i++)
-        {
-            for (j = 0; j < nuevoAncho; j++)
-            {
-                printf("%d ", matrizNueva[i][j]);
-            } 
-            printf("\n");
-        }
+        nuevasDimensiones[0] = dimColumna;
+        nuevasDimensiones[1] = dimFila;
 
         /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
 
         // Envio de la matriz por el pipe
-        //write(STDOUT_FILENO, nuevasDimensiones, 2 * sizeof(int));
-        //write(STDOUT_FILENO, nuevaMatriz, nuevoAlto * nuevoAncho * sizeof(int));
+        write(STDOUT_FILENO, nuevasDimensiones, 2 * sizeof(int));
+        write(STDOUT_FILENO, matrizNueva, dimColumna* dimFila * sizeof(int));
         wait(NULL);
     }
 
