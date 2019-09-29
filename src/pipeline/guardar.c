@@ -22,7 +22,7 @@ int main(int argc, char *argv[])
         int matriz[dimensiones[0]][dimensiones[1]];
         read(STDIN_FILENO, matriz, dimensiones[0] * dimensiones[1] * sizeof(int));
 
-        sprintf(nombreSalida, "salida%i.png", img);
+        sprintf(nombreSalida, "salida%i.ppm", img);
 
         FILE *nuevaIMG = fopen(nombreSalida, "wb");
         fprintf(nuevaIMG, "P6\n%i %i 255\n", dimensiones[1], dimensiones[0]);
