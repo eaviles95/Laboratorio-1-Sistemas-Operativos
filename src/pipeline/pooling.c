@@ -187,15 +187,15 @@ int main(int argc, char *argv[])
             } 
         }
 
-        int nuevasDimensiones[2];
+        int nuevasDim[2];
 
-        nuevasDimensiones[0] = dimColumna;
-        nuevasDimensiones[1] = dimFila;
+        nuevasDim[0] = dimColumna;
+        nuevasDim[1] = dimFila;
 
         /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
 
         // Envio de la matriz por el pipe
-        write(STDOUT_FILENO, nuevasDimensiones, 2 * sizeof(int));
+        write(STDOUT_FILENO, nuevasDim, 2 * sizeof(int));
         write(STDOUT_FILENO, matrizNueva, dimColumna* dimFila * sizeof(int));
         wait(NULL);
     }

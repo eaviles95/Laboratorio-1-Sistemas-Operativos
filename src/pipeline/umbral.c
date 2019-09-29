@@ -68,7 +68,7 @@ int main(int argc, char *argv[])
         /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
 
         // Envio de la matriz por el pipe
-        write(STDOUT_FILENO, resultado, sizeof(int));
+        write(STDOUT_FILENO, &resultado, sizeof(int));
         write(STDOUT_FILENO, dimensiones, 2*sizeof(int));
         write(STDOUT_FILENO, matriz, dimensiones[0] * dimensiones[1] * sizeof(int));
         wait(NULL);
