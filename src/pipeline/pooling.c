@@ -68,8 +68,8 @@ int pooling(int **matriz1, int filas, int columnas, int x, int y)
 
 int **generarPooling(int **matriz1, int filas, int columnas)
 {
-    int filaAux = filas - 2;
-    int columnaAux = columnas - 2;
+    int filaAux = (filas - 2) / 3;
+    int columnaAux = (columnas - 2) / 3;
     int i, j;
     int **mtxPooling = (int **)malloc(sizeof(int *) * filaAux);
     int pool = 0;
@@ -79,7 +79,7 @@ int **generarPooling(int **matriz1, int filas, int columnas)
         mtxPooling[i] = (int *)malloc(sizeof(int) * columnaAux);
         for (j = 0; j < columnaAux; j++)
         {
-            pool = pooling(matriz1, filas, columnas, i, j);
+            pool = pooling(matriz1, filas, columnas, i * 3, j * 3);
             mtxPooling[i][j] = pool;
         }
     }
@@ -154,10 +154,10 @@ int main(int argc, char *argv[])
                 }
             }
 
-            int dimFila = dimensiones[0] - 2;
-            int dimColumna = dimensiones[1] - 2;
-
             int **mtxPooling = generarPooling(mtx, dimensiones[0], dimensiones[1]);
+
+            int dimFila = (dimensiones[0] - 2) / 3;
+            int dimColumna = (dimensiones[1] - 2) / 3;
 
             int matrizNueva[dimColumna][dimFila];
 
